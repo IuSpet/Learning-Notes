@@ -65,7 +65,178 @@
 ​		我用idea直接创建的spring项目，但是仍然缺了几个包，导致试了几种方法都一直报错，分别是
 
 - aspectjrt.jar
+
 - aspectjweaver.jar
+
 - aspectj.jar
 
+  实现功能，在play()方法执行前后各打印一句话
+
 #### 基于注解的AOP实现
+
+##### 连接点
+
+```java
+package example;
+
+import org.springframework.stereotype.Component;
+
+@Component
+public class Play {
+    public void play() {
+        System.out.println("play");
+    }
+}
+```
+
+##### 切面
+
+
+```java
+package example;
+
+import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.springframework.stereotype.Component;
+
+@Component
+@Aspect
+public class CutPoint {
+    @Before("execution(* example.Play.play())")
+    public void before() {
+        System.out.println("before");
+    }
+
+    @After("execution(* example.Play.play())")
+    public void after() {
+        System.out.println("after");
+    }
+}
+```
+
+##### 配置文件
+
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:component-scan base-package="example" />
+
+    <aop:aspectj-autoproxy/>
+
+</beans>
+```
+
+##### 入口函数
+
+```java
+package example;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class Main {
+    public static void main(String[] args) {
+        ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+        Play play = (Play) context.getBean("play");
+        play.play();
+    }
+}
+```
+
+##### 结果
+
+```
+before
+play
+after
+```
+
+#### 用配置文件实现AOP
+
+##### 连接点
+
+
+```java
+package example;
+public class Play {
+    public void play() {
+        System.out.println("play");
+    }
+}
+```
+
+##### 切面
+
+
+```java
+package example;
+public class CutPoint {
+    public void before() {
+        System.out.println("before");
+    }
+
+    public void after() {
+        System.out.println("after");
+    }
+}
+```
+
+##### 配置文件
+
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd ">
+
+    <bean id="play" class="example.Play"/>
+    <bean id="cut" class="example.CutPoint"/>
+    <aop:config>
+        <aop:pointcut id="cutAspetc" expression="execution(* example.Play.play())"/>
+        <aop:aspect id="cutAspetc" ref="cut">
+            <aop:before method="before" pointcut-ref="cutAspetc"/>
+            <aop:after method="after" pointcut-ref="cutAspetc"/>
+        </aop:aspect>
+    </aop:config>
+
+</beans>
+```
+
+##### 入口函数
+
+```java
+package example;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class Main {
+    public static void main(String[] args) {
+        ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+        Play play = (Play) context.getBean("play");
+        play.play();
+    }
+}
+```
+
+##### 结果
+
+```
+before
+play
+after
+```
+
