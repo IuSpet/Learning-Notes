@@ -1,5 +1,7 @@
 # Java学习笔记——面向对象基础
 
+[TOC]
+
 ### 类
 
 ​		将一个事务抽象构造出来的原型，通过该原型可以创建属于该事务的实例，有了实例可以按照定义好的方法执行操作
@@ -44,12 +46,15 @@ class cls {
 
 ​		可以将子类实例赋值给父类的变量，或者调用父类的构造函数创建父类对象
 
+​		反之，如果本身是一个类贼对象，转型可以成功；否则，产生 `ClassCastException` 异常
+
 ```java
 public class Main {
     public static void main(String[] args) {
-        A a1 = new B(2,3);
-        B b1 = new B(3,2);
-        A a2 = b1;
+        A a1 = new B(2,3);		//可以
+        A a2 = new A(3,4);
+        B b1 = a1;				//可以，a1本身就是B类的实例
+        B b2 = a2;				//不可以
     }
 }
 class A {
@@ -67,9 +72,7 @@ class B extends A {
 }
 ```
 
-​		反之不允许，产生 `ClassCastException` 异常
-
-​		可以使用 `instanceof` 来判断是否可以这样赋值，即是否是该类型的一个实例。 `instanceof` 是一个**运算符**，不是函数
+​		可以使用 `instanceof` 来判断是否可以转型，即是否是该类型的一个实例。 `instanceof` 是一个**运算符**，不是函数
 
 ​		使用 `final` 修饰一个类，可以使该类无法被继承
 
@@ -114,4 +117,10 @@ Object类内定义的常用方法
 - `toString()`：把instance输出为`String`；
 - `equals()`：判断两个instance是否逻辑相等；
 - `hashCode()`：计算一个instance的哈希值
+
+### 多态
+
+​		多态是指，针对某个类型的方法调用，其真正执行的方法取决于运行时期实际类型的方法
+
+​		通过多态，代码种只要调用抽象类或者接口的方法，在运行时，会根据不同的实例类型执行不同的方法
 
