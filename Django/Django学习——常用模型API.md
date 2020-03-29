@@ -322,7 +322,7 @@ WHERE score BETWEEN 80 AND 89;
 
 #### 跨关系查询
 
-​		假如想查询老师是’zzz‘的学生，Django提供了跨关系查询，同样也是用双下划线 `__` 连接
+​		假如想查询老师是 ’zzz‘ 的学生，Django提供了跨关系查询，同样也是用双下划线 `__` 连接
 
 ```python
 Student.objects.filter(courses__teacher='zzz')
