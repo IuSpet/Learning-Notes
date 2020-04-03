@@ -201,7 +201,7 @@ class C{
 }
 ```
 
-#### 通过 `Field` 访问修改对象对应字段的值
+#### 通过 `Field` 实例访问修改对象对应字段的值
 
 ​		通过上述四种方法可以获得 `Field` 对象，就可以用来修改相应的类的实例的对应字段的内容
 
@@ -249,7 +249,57 @@ class C{
 
 ### 调用方法
 
+- public Method[] getMethods() (Class.java: 1900)(jdk13)
 
+- public Method getMethod(String name, Class<?>... parameterTypes) (Class.java: 2100)(jdk13)
+
+- public Method[] getDeclaredMethods() (Class.java: 2305)(jdk13)
+- public Method getDeclaredMethod(String name, Class<?>... parameterTypes) (Class.java: 2467)(jdk13)
+
+这四个方法与上面四个获取字段的方法类似，参数为方法名和参数表，返回 `Method` 实例
+
+#### 使用 `Method` 实例调用方法
+
+```java
+package inflect;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+public class Main {
+    public static void main(String[] args) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Object object = new A();
+        Class cls = object.getClass();
+        //根据方法名和参数表获取方法
+        Method method = cls.getDeclaredMethod("fun", int.class, int.class, C.class);
+        //调用方法
+        int ans = (int) method.invoke(object,2, 3, new C(4));
+        System.out.println(ans);
+        //24
+    }
+}
+class A {
+    public int fun(int a, int b, C c) {
+        return a * b * c.getC();
+    }
+}
+class C {
+    private int c;
+    C(int c) {
+        this.c = c;
+    }
+    int getC() {
+        return c;
+    }
+}
+```
+
+#### 小结
+
+- 对于一个对象 object
+- 通过 `object.getclass()` 获得它的类加载实例 cls
+- 通过 `cls.getMethods()` 等方法获得 object 能够调用的方法 method
+- 通过 `method.invoke(object,args)`  调用object的对应方法
 
 ### 参考资料
 
