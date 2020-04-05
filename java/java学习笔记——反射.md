@@ -201,7 +201,7 @@ class C{
 }
 ```
 
-#### 通过 `Field` 实例访问修改对象对应字段的值
+#### 使用 `Field` 实例访问修改对象对应字段的值
 
 ​		通过上述四种方法可以获得 `Field` 对象，就可以用来修改相应的类的实例的对应字段的内容
 
@@ -241,8 +241,7 @@ class C{
 
 #### 小结
 
-- 对于一个对象object
-- 通过 `object.getclass()` 获得它的类加载实例 cls
+- 获取某一类的 `Class` 实例 cls
 - 通过 `cls.getFields()` 等方法获得object的属性字段 field
 - 通过 `field.get(object)` 获取 object 对应字段的值
 - 通过 `field.set(object,value)` 将 object 对应字段的值设置为 value
@@ -296,10 +295,57 @@ class C {
 
 #### 小结
 
-- 对于一个对象 object
-- 通过 `object.getclass()` 获得它的类加载实例 cls
+- 获取某一类的 `Class` 实例 cls
 - 通过 `cls.getMethods()` 等方法获得 object 能够调用的方法 method
 - 通过 `method.invoke(object,args)`  调用object的对应方法
+
+### 创建新实例
+
+#### 调用无参构造函数创建实例
+
+```java
+Class cls = object.getClass();
+Object c = cls.newInstance();
+```
+
+再JDK13中， `newInstance()` 方法已被废弃，替代的方法为以下创建新实例的一般方法
+
+#### 调用构造函数创建实例
+
+​		通过 `getDeclaredConstructor()` 等方法获得 `Constructor` 对象后再调用 `newInstance(args)` 方法创建，也可以对返回单个 `Constructor` 对象的方法后面链式调用 `newInstance(args)`
+
+```java
+package inflect;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+public class Main {
+    public static void main(String[] args) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
+        Class cls = C.class;
+        Object object = cls.getDeclaredConstructor().newInstance();
+        Object object1 = cls.getDeclaredConstructor(String.class).newInstance("object1");
+        //用Constructor对象构造
+        Constructor constructor = cls.getDeclaredConstructor(String.class);
+        Object object2 = constructor.newInstance("object2");
+    }
+}
+class C {
+    C(){
+        System.out.println("使用无参构造方法产生C的的新实例");
+    }
+    C(String name) {
+        System.out.println("C的新实例: "+name);
+    }
+}
+```
+
+#### 小结
+
+- 获取某一类的 `Class` 实例 cls
+- 通过 `cls.getDeclaredConstructor()` 等方法获得 `Constructor` 实例 constructor
+- 使用 `constructor.newInstance(args)` 创建新的实例
 
 ### 参考资料
 
