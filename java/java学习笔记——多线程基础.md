@@ -51,7 +51,7 @@ public class Main {
 }
 ```
 
-#### 实现 Runnable 接口，重写 run 方法
+#### 实现 Runnable 接口，重写 run 方法，作为参数传入Thread()
 
 ```java
 package example;
