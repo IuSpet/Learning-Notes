@@ -134,7 +134,7 @@ public synchronized void B(){;}
 
 ​		`ReentrantLock`需要手动释放锁
 
-### `ReentrantReadWriteLock` 
+### ReentrantReadWriteLock
 
 ​		`ReadWriteLock`锁是为了读多写少场景下的并发度
 
@@ -144,7 +144,7 @@ public synchronized void B(){;}
 
 ​		该锁是一个悲观的锁，因为**悲观地**认为要读的数据一定会被写操作修改，所以写的时候不允许读
 
-### `StampedLock` 
+### StampedLock
 
 ​		`StampedLock` 锁对`ReentrantReadWriteLock` 进行了改进，允许读写操作可以同时进行，不再让线程等待锁的释放，进一步提高并发度
 

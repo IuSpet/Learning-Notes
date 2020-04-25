@@ -1,5 +1,7 @@
 # java学习笔记——多线程基础
 
+[TOC]
+
 ### 创建新线程
 
 #### 继承Thread类重写run方法
@@ -204,3 +206,4 @@ public class Main {
 [多线程 - 廖雪峰的官方网站](https://www.liaoxuefeng.com/wiki/1252599548343744/1255943750561472)
 
 [深入浅出Java多线程](http://concurrent.redspider.group/)
+
