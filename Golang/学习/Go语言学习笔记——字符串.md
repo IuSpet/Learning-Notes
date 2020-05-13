@@ -82,7 +82,7 @@ pos := strings.LastIndex(s1, "hello")	//0
 
 #### 获取子串
 
-&emsp;&emsp;如果要将字符串中的子串拿出单独处理，可以使用类似python切片的方式
+&emsp;&emsp;如果要将字符串中的子串拿出单独处理，可以使用切片
 
 ```go
 var s1 string = "hello世界"
