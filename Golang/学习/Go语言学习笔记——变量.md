@@ -82,7 +82,7 @@ fmt.Println(reflect.TypeOf(b))
 //float64
 ```
 
-​		如果表达式内带有类型信息，编译器还是会根据表达式的类型进行推断
+&emsp;&emsp;如果表达式内带有类型信息，编译器还是会根据表达式的类型进行推断
 
 ```go
 var b = float32(3.14)
@@ -99,7 +99,7 @@ a := 2	//等价于 var a int = 2
 b := 3.14 //等价于 var b float64 = 3.14
 ```
 
-​		对于函数的返回值，这种形式非常方便
+&emsp;&emsp;对于函数的返回值，这种形式非常方便
 
 ```go
 conn, err := net.Dial("tcp", "127.0.0.1:8080")
@@ -218,13 +218,13 @@ func fun(day weekday) int{
 }
 ```
 
-​		编译没有问题，weekday被当作int处理
+&emsp;&emsp;编译没有问题，weekday被当作int处理
 
 ### 类型定义
 
 写法：`type <new_type> <origin_type>`
 
-​		定义一个新的类型，与原类型分开处理，两种类型的变量不能混用
+&emsp;&emsp;定义一个新的类型，与原类型分开处理，两种类型的变量不能混用
 
 ```go
 type weekday int
@@ -233,7 +233,7 @@ func fun(day weekday) int{
 }
 ```
 
-​		编译会报错，因为返回值day的类型是weekday，与函数定义的int不符
+&emsp;&emsp;编译会报错，因为返回值day的类型是weekday，与函数定义的int不符
 
 #### 为非本地类型定义方法
 
@@ -242,9 +242,9 @@ type dur = time.Duration
 func (d dur) fun() {}		//编译出错
 ```
 
-​		`time.Duration`是包外定义的类型，在自己的包中不能为它定义方法，使用类型别名会编译报错
+&emsp;&emsp;`time.Duration`是包外定义的类型，在自己的包中不能为它定义方法，使用类型别名会编译报错
 
-​		此时可以利用类型定义，指定新的类型定义方法，但是新的类型不能使用原类型的方法
+&emsp;&emsp;此时可以利用类型定义，指定新的类型定义方法，但是新的类型不能使用原类型的方法
 
 ```go
 type dur time.Duration
