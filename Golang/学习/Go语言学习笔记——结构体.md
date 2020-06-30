@@ -61,6 +61,23 @@ var s1 = S{
    c:"a"}
 ```
 
+### 结构体标签
+
+&emsp;&emsp;在结构体可以为字段添加标签，用于json传输等场合
+
+```go
+type NetConf struct {
+    Master string `json:"master"`
+    Mode   string `json:"mode"`
+    MTU    int    `json:"mtu"`
+    Debug  bool   `json:"debug"`
+}
+```
+
+&emsp;&emsp;标签中的json信息，会在序列化时命名对应字段，如果有同名json标签，**序列化时会忽略重复的**
+
+&emsp;&emsp;除了json，在使用gorm时，结构体标签还可以描述该字段在数据库中的信息
+
 ### 使用结构体
 
 &emsp;&emsp;可以为将定义的结构体作为接收器定义方法
